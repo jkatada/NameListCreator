@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml-stylesheet type="text/xsl" href="style.xslt"?>
+
+<namelist>
+	<type name="MemberRegisterController">
+		<annotation name="Controller">
+			<text><![CDATA[@Controller]]></text>
+		</annotation>
+		<annotation name="RequestMapping">
+			<param name="value" value="&quot;member&quot;" />
+			<text><![CDATA[@RequestMapping("member")]]></text>
+		</annotation>
+		<annotation name="SessionAttributes">
+			<param name="value" value="{&quot;totalFare&quot;,&quot;account&quot;}" />
+			<text><![CDATA[@SessionAttributes(value={"totalFare","account"})]]></text>
+		</annotation>
+		<modifier value="public" />
+		<method name="setUpForm" returnType="MemberRegisterForm">
+			<annotation name="ModelAttribute">
+				<text><![CDATA[@ModelAttribute]]></text>
+			</annotation>
+			<modifier value="public" />
+			<return return="new MemberRegisterForm()" />
+		</method>
+		<method name="form" returnType="String">
+			<annotation name="RequestMapping">
+				<param name="value" value="&quot;register&quot;" />
+				<param name="params" value="&quot;form&quot;" />
+				<param name="method" value="RequestMethod.GET" />
+				<text><![CDATA[@RequestMapping(value="register",params="form",method=RequestMethod.GET)]]></text>
+			</annotation>
+			<modifier value="public" />
+			<param name="model" type="Model" />
+			<invocation name="addAttribute">
+				<arg expression="&quot;kindList&quot;" />
+				<arg expression="new String[]{&quot;normal&quot;,&quot;vip&quot;}" />
+				<text><![CDATA[model.addAttribute("kindList",new String[]{"normal","vip"})]]></text>
+			</invocation>
+			<return return="&quot;member&quot;" />
+			<return return="&quot;member/registerForm&quot;" />
+		</method>
+		<method name="confirm" returnType="String">
+			<annotation name="RequestMapping">
+				<param name="value" value="&quot;register&quot;" />
+				<param name="params" value="&quot;confirm&quot;" />
+				<param name="method" value="RequestMethod.POST" />
+				<text><![CDATA[@RequestMapping(value="register",params="confirm",method=RequestMethod.POST)]]></text>
+			</annotation>
+			<modifier value="public" />
+			<param name="form" type="MemberRegisterForm" />
+			<param name="model" type="Model" />
+			<invocation name="addAttribute">
+				<arg expression="&quot;totalFare&quot;" />
+				<arg expression="totalFare" />
+				<text><![CDATA[model.addAttribute("totalFare",totalFare)]]></text>
+			</invocation>
+			<invocation name="addAttribute">
+				<arg expression="&quot;account&quot;" />
+				<arg expression="account" />
+				<text><![CDATA[model.addAttribute("account",account)]]></text>
+			</invocation>
+			<return return="&quot;member/confirm&quot;" />
+		</method>
+		<method name="register" returnType="String">
+			<annotation name="RequestMapping">
+				<param name="value" value="&quot;register&quot;" />
+				<param name="method" value="RequestMethod.POST" />
+				<text><![CDATA[@RequestMapping(value="register",method=RequestMethod.POST)]]></text>
+			</annotation>
+			<modifier value="public" />
+			<param name="form" type="MemberRegisterForm" />
+			<param name="totalFare" type="int">
+				<annotation name="ModelAttribute">
+					<param name="value" value="&quot;totalFare&quot;" />
+					<text><![CDATA[@ModelAttribute("totalFare")]]></text>
+				</annotation>
+			</param>
+			<param name="account" type="Account">
+				<annotation name="ModelAttribute">
+					<param name="value" value="&quot;account&quot;" />
+					<text><![CDATA[@ModelAttribute("account")]]></text>
+				</annotation>
+			</param>
+			<return return="&quot;redirect:register?complete&quot;" />
+		</method>
+		<method name="registerComplete" returnType="String">
+			<annotation name="RequestMapping">
+				<param name="value" value="&quot;register&quot;" />
+				<param name="params" value="&quot;complete&quot;" />
+				<param name="method" value="RequestMethod.GET" />
+				<text><![CDATA[@RequestMapping(value="register",params="complete",method=RequestMethod.GET)]]></text>
+			</annotation>
+			<modifier value="public" />
+			<return return="&quot;member/complete&quot;" />
+		</method>
+		<method name="backToForm" returnType="String">
+			<annotation name="RequestMapping">
+				<param name="value" value="&quot;register&quot;" />
+				<param name="params" value="&quot;backToForm&quot;" />
+				<text><![CDATA[@RequestMapping(value="register",params="backToForm")]]></text>
+			</annotation>
+			<modifier value="public" />
+			<param name="form" type="MemberRegisterForm" />
+			<param name="redirectAttributes" type="RedirectAttributes" />
+			<return return="&quot;redirect:register?form&quot;" />
+		</method>
+		<method name="testMethod" returnType="void">
+			<modifier value="private" />
+			<type name="(Anonymous Class)">
+				<method name="mouseClicked" returnType="void">
+					<annotation name="Override">
+						<text><![CDATA[@Override]]></text>
+					</annotation>
+					<modifier value="public" />
+					<param name="e" type="MouseEvent" />
+				</method>
+			</type>
+		</method>
+		<type name="TestInner">
+			<modifier value="private" />
+			<method name="innerTest" returnType="void">
+				<modifier value="public" />
+			</method>
+		</type>
+	</type>
+	<type name="Testclass2" />
+	<type name="TestEnum">
+		<enumConst name="CODE1" />
+		<enumConst name="CODE2" />
+		<enumConst name="CODE3" />
+		<method name="getCodeName" returnType="String">
+			<modifier value="public" />
+			<return return="&quot; [ &quot; + name() + &quot; ]&quot;" />
+		</method>
+	</type>
+</namelist>
+
