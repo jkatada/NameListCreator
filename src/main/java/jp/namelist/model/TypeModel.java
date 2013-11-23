@@ -5,22 +5,22 @@ import java.util.TreeSet;
 
 public class TypeModel extends AbstractModifiableModel {
 
-	private Set<MethodModel> methodSet;
+	private Set<MethodModel> methods;
 
 	// TODO フィールド
 	// TODO enum
 	
 	public TypeModel(String name) {
 		super(name);
-		methodSet = new TreeSet<>();
+		methods = new TreeSet<>();
 	}
 	
 	public void addMethod(MethodModel method) {
-		methodSet.add(method);
+		methods.add(method);
 	}
 
-	public Set<MethodModel> getMethodSet() {
-		return methodSet;
+	public Set<MethodModel> getMethods() {
+		return methods;
 	}
 	
 	

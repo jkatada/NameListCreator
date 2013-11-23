@@ -1,12 +1,9 @@
 package jp.namelist;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.StringWriter;
-import java.nio.file.FileSystem;
+import java.nio.charset.Charset;
 import java.nio.file.FileSystems;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
@@ -18,9 +15,10 @@ import java.util.Map;
 import javax.xml.transform.TransformerFactoryConfigurationError;
 
 import jp.namelist.analyzer.ModelBuilder;
-import jp.namelist.analyzer.SourceVisitor;
-import jp.namelist.view.HTMLViewExporter;
 
+import org.apache.velocity.Template;
+import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.Velocity;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.dom.AST;
@@ -33,77 +31,85 @@ public class Main {
 		// String file =
 		// "../test.springmvc/src/main/java/test/springmvc/MemberRegisterController.java";
 		String file = "../test.springmvc/src/main/java";
-
+		Path sourceDir = FileSystems.getDefault().getPath(file);
 		Main main = new Main();
-		main.processProject(FileSystems.getDefault().getPath(file));
+		main.processProject("hoge-pj", sourceDir);
 	}
 
-	private void processProject(Path sourceDir) {
+	private void processProject(String projectName, Path sourceDir) {
 
+		ModelBuilder builder = new ModelBuilder(projectName);
+		
 		try {
-			Files.walkFileTree(sourceDir, new JavaFileVisitor());
+			Files.walkFileTree(sourceDir, new JavaFileVisitor(builder));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		StringWriter output = new StringWriter();
+		//new HTMLViewExporter(output).export(builder.getProject());
+		//System.out.println(output.toString());
 
-		// XMLModelExporter exporter = new XMLModelExporter();
-		// exporter.export(collector.getDocument());
+		Velocity.init();
+		VelocityContext context = new VelocityContext();
+		context.put("project", builder.getProject());
+		Template template = Velocity.getTemplate("template/view/htmlTemplate.html", "UTF-8");
+		template.merge(context, output);
+		System.out.println(output.toString());
 
-		// String xml = exporter.getWriter().toString();
-		// System.out.println(xml);
-		// System.out.println(collector.getProject());
 	}
 
-	public class JavaFileVisitor extends SimpleFileVisitor<Path> {
+	private class JavaFileVisitor extends SimpleFileVisitor<Path> {
+
+		private ModelBuilder builder;
+		
+		public JavaFileVisitor(ModelBuilder builder) {
+			this.builder = builder;
+		}
 
 		@Override
-		public FileVisitResult visitFile(Path file, BasicFileAttributes attrs)
+		public FileVisitResult visitFile(Path sourcePath, BasicFileAttributes attrs)
 				throws IOException {
 
-			String fileName = file.getFileName().toString();
-			if (fileName.endsWith(".java") && !fileName.startsWith("package-info")) {
-				try (FileInputStream fis = new FileInputStream(file.toFile());
-						InputStreamReader isr = new InputStreamReader(fis,
-								"UTF-8");
-						BufferedReader br = new BufferedReader(isr);
-						StringWriter sw = new StringWriter()) {
-					int read;
-					while ((read = br.read()) != -1) {
-						sw.write(read);
-					}
-
-					ASTParser parser = ASTParser.newParser(AST.JLS4);
-					parser.setSource(sw.toString().toCharArray());
-
-					// コンパイラバージョンの指定。enumを認識するために必要。
-					Map options = JavaCore.getOptions();
-					JavaCore.setComplianceOptions(JavaCore.VERSION_1_7, options);
-					parser.setCompilerOptions(options);
-
-					CompilationUnit cu = (CompilationUnit) parser
-							.createAST(new NullProgressMonitor());
-
-					ModelBuilder builder = new ModelBuilder("hogePJ", file
-							.getParent().toString(), file.getFileName()
-							.toString());
-					cu.accept(new SourceVisitor(builder));
-
-					StringWriter output = new StringWriter();
-					new HTMLViewExporter(output).export(builder.getProject());
-					System.out.println(output.toString());
-
-				} catch (IOException e) {
-					e.printStackTrace();
-				} catch (TransformerFactoryConfigurationError e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
-
-
+			String fileName = sourcePath.getFileName().toString();
+			if (!fileName.endsWith(".java")
+					|| fileName.equals("package-info.java")) {
+				return super.visitFile(sourcePath, attrs);
 			}
-			return super.visitFile(file, attrs);
+
+			CompilationUnit cu = parserJavaSource(readJavaSource(sourcePath));
+
+			cu.accept(builder);
+
+			return super.visitFile(sourcePath, attrs);
+		}
+
+		private String readJavaSource(Path sourcePath) {
+			StringWriter sw = new StringWriter();
+			try (BufferedReader br = Files.newBufferedReader(sourcePath,
+					Charset.forName("UTF-8"))) {
+				int read;
+				while ((read = br.read()) != -1) {
+					sw.write(read);
+				}
+			} catch (IOException | TransformerFactoryConfigurationError e) {
+				throw new IllegalStateException(e);
+			}
+			return sw.toString();
+		}
+
+		private CompilationUnit parserJavaSource(String source) {
+			ASTParser parser = ASTParser.newParser(AST.JLS4);
+			parser.setSource(source.toCharArray());
+
+			// コンパイラバージョンの指定。enumを認識するために必要。
+			Map options = JavaCore.getOptions();
+			JavaCore.setComplianceOptions(JavaCore.VERSION_1_7, options);
+			parser.setCompilerOptions(options);
+
+			return (CompilationUnit) parser
+					.createAST(new NullProgressMonitor());
 		}
 	}
 }

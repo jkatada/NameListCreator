@@ -5,20 +5,19 @@ import java.util.TreeSet;
 
 public class PackageModel extends AbstractModel {
 
-	private Set<CompilationUnitModel> compilationUnitSet;
+	private Set<TypeModel> types;
 
 	public PackageModel(String name) {
 		super(name);
-		compilationUnitSet = new TreeSet<>();
+		types = new TreeSet<>();
 	}
 	
-	public Set<CompilationUnitModel> getCompilationUnitSet() {
-		return compilationUnitSet;
+	public Set<TypeModel> getTypes() {
+		return types;
 	}
 
-	public void addCompilationUnit(CompilationUnitModel compilationUnit) {
-		compilationUnitSet.add(compilationUnit);
+	public void addType(TypeModel typeModel) {
+		types.add(typeModel);
 	}
-	
 	
 }

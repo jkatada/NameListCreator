@@ -1,34 +1,32 @@
 package jp.namelist.model;
 
-import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
 import java.util.TreeSet;
 
 public class MethodModel extends AbstractModifiableModel {
 
 	private String returnType;
-	private Set<MethodParameterModel> paramSet;
-	private Set<String> methodInvocationSet;
-	private Set<String> methodReturnSet;
+	private Set<MethodParameterModel> params;
+	private Set<String> methodInvocations;
+	private Set<String> methodReturns;
 
 	public MethodModel(String name) {
 		super(name);
-		paramSet = new TreeSet<>();
-		methodInvocationSet = new TreeSet<>();
-		methodReturnSet = new TreeSet<>();
+		params = new TreeSet<>();
+		methodInvocations = new TreeSet<>();
+		methodReturns = new TreeSet<>();
 	}
 	
 	public void addParam(MethodParameterModel param) {
-		paramSet.add(param);
+		params.add(param);
 	}
 	
 	public void addMethodInvocation(String methodInvocation) {
-		methodInvocationSet.add(methodInvocation);
+		methodInvocations.add(methodInvocation);
 	}
 	
 	public void addMethodReturn(String methodReturn) {
-		methodReturnSet.add(methodReturn);
+		methodReturns.add(methodReturn);
 	}
 
 	public String getReturnType() {
@@ -39,17 +37,16 @@ public class MethodModel extends AbstractModifiableModel {
 		this.returnType = returnType;
 	}
 
-	public Set<MethodParameterModel> getParamSet() {
-		return paramSet;
+	public Set<MethodParameterModel> getParams() {
+		return params;
 	}
 
-	public Set<String> getMethodInvocationSet() {
-		return methodInvocationSet;
+	public Set<String> getMethodInvocations() {
+		return methodInvocations;
 	}
 
-	public Set<String> getMethodReturnSet() {
-		return methodReturnSet;
+	public Set<String> getMethodReturns() {
+		return methodReturns;
 	}
-
 
 }

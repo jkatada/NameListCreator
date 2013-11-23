@@ -1,24 +1,24 @@
 package jp.namelist.model;
 
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.Map;
+import java.util.TreeMap;
 
 
 public class ProjectModel extends AbstractModel {
 
-	private Set<PackageModel> packageSet;
+	private Map<String, PackageModel> packages;
 	
 	public ProjectModel(String name) {
 		super(name);
-		packageSet = new TreeSet<>();
+		packages = new TreeMap<>();
 	}
 	
 	public void addPackage(PackageModel packageModel) {
-		packageSet.add(packageModel);
+		packages.put(packageModel.getName(), packageModel);
 	}
 
-	public Set<PackageModel> getPackageSet() {
-		return packageSet;
+	public Map<String, PackageModel> getPackages() {
+		return packages;
 	}
 	
 	
