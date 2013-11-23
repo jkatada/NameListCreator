@@ -1,4 +1,4 @@
-package jp.namelist.analyzer.export;
+package jp.namelist.analyzer;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -14,15 +14,15 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Document;
 
-public class XMLExporter {
+public class XMLModelExporter {
 
 	private Writer writer;
 
-	public XMLExporter() {
+	public XMLModelExporter() {
 		this(new StringWriter());
 	}
 
-	public XMLExporter(Writer writer) {
+	public XMLModelExporter(Writer writer) {
 		this.writer = writer;
 	}
 

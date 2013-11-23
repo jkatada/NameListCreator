@@ -1,4 +1,4 @@
-package jp.namelist.analyzer.export;
+package jp.namelist.analyzer;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -27,148 +27,102 @@ import org.eclipse.jdt.core.dom.TypeDeclaration;
 
 public class SourceVisitor extends ASTVisitor {
 
-	private XMLCollector collector;
+	private XMLModelBuilder modelBuilder;
+	
+	private AnalyzeFilter filter = new AnalyzeFilter();
 
-	public SourceVisitor(XMLCollector collector) {
-		this.collector = collector;
+	public SourceVisitor(XMLModelBuilder modelBuilder) {
+		this.modelBuilder = modelBuilder;
 	}
 	
 	@Override
 	public boolean visit(AnonymousClassDeclaration node) {
 
-		collector.collectStart(node);
+		modelBuilder.analyzeNode(node);
 
 		return super.visit(node);
 	}
 	@Override
 	public void endVisit(AnonymousClassDeclaration node) {
-		collector.collectEnd();
+		modelBuilder.upAnalyzeHierarchy();
 		super.endVisit(node);
 	}
 
 	@Override
 	public boolean visit(TypeDeclaration node) {
 
-		collector.collectStart(node);
+		modelBuilder.analyzeNode(node);
 
 		return super.visit(node);
 	}
 
 	@Override
 	public void endVisit(TypeDeclaration node) {
-		collector.collectEnd();
+		modelBuilder.upAnalyzeHierarchy();
 		super.endVisit(node);
 	}
 
 	@Override
 	public boolean visit(EnumDeclaration node) {
-		collector.collectStart(node);
+		modelBuilder.analyzeNode(node);
 
 		return super.visit(node);
 	}
 	@Override
 	public void endVisit(EnumDeclaration node) {
-		collector.collectEnd();
+		modelBuilder.upAnalyzeHierarchy();
 		super.endVisit(node);
 	}
 	@Override
 	public boolean visit(EnumConstantDeclaration node) {
-		collector.collectStart(node);
+		modelBuilder.analyzeNode(node);
 
 		return super.visit(node);
 	}
 	@Override
 	public void endVisit(EnumConstantDeclaration node) {
-		collector.collectEnd();
+		modelBuilder.upAnalyzeHierarchy();
 		super.endVisit(node);
 	}
 	
 	@Override
 	public boolean visit(MethodDeclaration node) {
-		collector.collectStart(node);
+		modelBuilder.analyzeNode(node);
 		return super.visit(node);
 	}
 	
 	@Override
 	public void endVisit(MethodDeclaration node) {
-		collector.collectEnd();
+		modelBuilder.upAnalyzeHierarchy();
 		super.endVisit(node);
 	};
 	
 	@Override
 	public boolean visit(ReturnStatement node) {
-		collector.collectStart(node);
+		modelBuilder.analyzeNode(node);
 		return super.visit(node);
 	}
 
 	@Override
 	public void endVisit(ReturnStatement node) {
-		collector.collectEnd();
+		modelBuilder.upAnalyzeHierarchy();
 		super.endVisit(node);
 	}
 	
 	@Override
 	public boolean visit(MethodInvocation node) {
-		// TODO 絞り込みは別のクラスに委譲する
-		// model.addAttributeの呼び出しを絞込
-		if ("addAttribute".equals(node.getName().getIdentifier())) {
-			collector.collectStart(node);
+		if (filter.isTarget(node)) {
+			modelBuilder.analyzeNode(node);
 		}
 		return super.visit(node);
 	}
 	
 	@Override
 	public void endVisit(MethodInvocation node) {
-		if ("addAttribute".equals(node.getName().getIdentifier())) {
-			collector.collectEnd();
+		if (filter.isTarget(node)) {
+			modelBuilder.upAnalyzeHierarchy();
 		}
 		super.endVisit(node);
 	}
 
-	public static void main(String[] args) {
-		String file = "../test.springmvc/src/main/java/test/springmvc/MemberRegisterController.java";
-		
-		try (FileInputStream fis = new FileInputStream(file);
-				InputStreamReader isr = new InputStreamReader(fis, "UTF-8");
-				BufferedReader br = new BufferedReader(isr);
-				StringWriter sw = new StringWriter()) {
-			int read;
-			while ((read = br.read()) != -1) {
-				sw.write(read);
-			}
-
-			ASTParser parser = ASTParser.newParser(AST.JLS4);
-			parser.setSource(sw.toString().toCharArray());
-			
-			// コンパイラバージョンの指定。enumを認識するために必要。
-			Map options = JavaCore.getOptions();
-			JavaCore.setComplianceOptions(JavaCore.VERSION_1_7, options);
-			parser.setCompilerOptions(options);
-			
-			CompilationUnit cu = (CompilationUnit) parser.createAST(new NullProgressMonitor());
-
-			XMLCollector collector = new XMLCollector();
-			cu.accept(new SourceVisitor(collector));
-			
-			XMLExporter exporter = new XMLExporter();
-			exporter.export(collector.getDocument());
-
-			String xml = exporter.getWriter().toString();
-			System.out.println(xml);
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (TransformerFactoryConfigurationError e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (TransformerException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-			
-
-	}
-	
-
-	
 }

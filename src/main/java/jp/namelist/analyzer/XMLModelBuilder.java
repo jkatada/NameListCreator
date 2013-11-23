@@ -1,4 +1,4 @@
-package jp.namelist.analyzer.export;
+package jp.namelist.analyzer;
 
 import java.util.List;
 
@@ -24,13 +24,13 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-public class XMLCollector {
+public class XMLModelBuilder {
 
 	private Document document;
 
 	private Node currentNode;
-
-	public XMLCollector() {
+	
+	public XMLModelBuilder() {
 		try {
 			// XMLのルート要素を作成。
 			document = DocumentBuilderFactory.newInstance()
@@ -42,40 +42,40 @@ public class XMLCollector {
 		}
 	}
 
-	public void collectStart(EnumDeclaration enumDec) {
+	public void analyzeNode(EnumDeclaration enumDec) {
 		// TODO enumにするべき？
 		Element typeNode = createNode("type", currentNode);
 		typeNode.setAttribute("name", enumDec.getName().getIdentifier());
 
-		collectModifiers(enumDec.modifiers(), typeNode);
+		analyzeModifier(enumDec.modifiers(), typeNode);
 
 		currentNode = typeNode;
 	}
 
-	public void collectStart(EnumConstantDeclaration enumDec) {
+	public void analyzeNode(EnumConstantDeclaration enumDec) {
 		Element typeNode = createNode("enumConst", currentNode);
 		typeNode.setAttribute("name", enumDec.getName().getIdentifier());
 
-		collectModifiers(enumDec.modifiers(), typeNode);
+		analyzeModifier(enumDec.modifiers(), typeNode);
 
 		currentNode = typeNode;
 	}
 
-	public void collectStart(AnonymousClassDeclaration type) {
+	public void analyzeNode(AnonymousClassDeclaration type) {
 		Element typeNode = createNode("type", currentNode);
 		typeNode.setAttribute("name", "(Anonymous Class)");
 
 		currentNode = typeNode;
 	}
-	public void collectStart(TypeDeclaration type) {
+	public void analyzeNode(TypeDeclaration type) {
 		Element typeNode = createNode("type", currentNode);
 		typeNode.setAttribute("name", type.getName().getIdentifier());
-		collectModifiers(type.modifiers(), typeNode);
+		analyzeModifier(type.modifiers(), typeNode);
 
 		currentNode = typeNode;
 	}
 
-	private void collectModifiers(List modifiers, Element parent) {
+	private void analyzeModifier(List modifiers, Element parent) {
 		for (Object modifier : modifiers) {
 			// 型につけられたアノテーション情報の取得
 			if (modifier instanceof Annotation) {
@@ -125,10 +125,10 @@ public class XMLCollector {
 		}
 	}
 
-	public void collectStart(MethodDeclaration method) {
+	public void analyzeNode(MethodDeclaration method) {
 		Element methodNode = createNode("method", currentNode);
 		methodNode.setAttribute("name", method.getName().getFullyQualifiedName());
-		collectModifiers(method.modifiers(), methodNode);
+		analyzeModifier(method.modifiers(), methodNode);
 
 		// 戻り値の型の情報を取得
 		Type returnType = method.getReturnType2();
@@ -141,20 +141,20 @@ public class XMLCollector {
 			Element paramNode = createNode("param", methodNode);
 			paramNode.setAttribute("name", param.getName().getIdentifier());
 			paramNode.setAttribute("type", param.getType().toString());
-			collectModifiers(param.modifiers(), paramNode);
+			analyzeModifier(param.modifiers(), paramNode);
 		}
 		
 		currentNode = methodNode;
 	}
 
-	public void collectStart(ReturnStatement returnStatement) {
+	public void analyzeNode(ReturnStatement returnStatement) {
 		Element returnNode = createNode("return", currentNode);
 		returnNode.setAttribute("return", returnStatement.getExpression().toString());
 		
 		currentNode = returnNode;
 	}
 	
-	public void collectStart(MethodInvocation invocation) {
+	public void analyzeNode(MethodInvocation invocation) {
 		Element invocationNode = createNode("invocation", currentNode);
 		invocationNode.setAttribute("name", invocation.getName().getIdentifier());
 		
@@ -168,8 +168,13 @@ public class XMLCollector {
 		currentNode = invocationNode;
 	}
 	
-	public void collectEnd() {
-		currentNode = currentNode.getParentNode();
+	public boolean upAnalyzeHierarchy() {
+		Node parent = currentNode.getParentNode();
+		if (parent != null) {
+			currentNode = parent;
+		}
+		
+		return (parent != null);
 	}
 
 	private Element createNode(String name, Node parent) {
