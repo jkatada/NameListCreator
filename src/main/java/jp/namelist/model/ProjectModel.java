@@ -1,7 +1,7 @@
 package jp.namelist.model;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.TreeMap;
 
 
 public class ProjectModel extends AbstractModel {
@@ -10,7 +10,7 @@ public class ProjectModel extends AbstractModel {
 	
 	public ProjectModel(String name) {
 		super(name);
-		packages = new TreeMap<>();
+		packages = new LinkedHashMap<>();
 	}
 	
 	public void addPackage(PackageModel packageModel) {

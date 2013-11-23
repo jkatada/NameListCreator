@@ -1,7 +1,7 @@
 package jp.namelist.model;
 
+import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.TreeSet;
 
 public class PackageModel extends AbstractModel {
 
@@ -9,7 +9,7 @@ public class PackageModel extends AbstractModel {
 
 	public PackageModel(String name) {
 		super(name);
-		types = new TreeSet<>();
+		types = new LinkedHashSet<>();
 	}
 	
 	public Set<TypeModel> getTypes() {

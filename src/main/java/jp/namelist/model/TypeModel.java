@@ -1,7 +1,7 @@
 package jp.namelist.model;
 
+import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.TreeSet;
 
 public class TypeModel extends AbstractModifiableModel {
 
@@ -12,7 +12,7 @@ public class TypeModel extends AbstractModifiableModel {
 	
 	public TypeModel(String name) {
 		super(name);
-		methods = new TreeSet<>();
+		methods = new LinkedHashSet<>();
 	}
 	
 	public void addMethod(MethodModel method) {

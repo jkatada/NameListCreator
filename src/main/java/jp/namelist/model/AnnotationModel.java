@@ -1,8 +1,8 @@
 package jp.namelist.model;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 import jp.namelist.common.CollectionUtil;
 
@@ -13,7 +13,7 @@ public class AnnotationModel extends AbstractModel {
 	
 	public AnnotationModel(String name) {
 		super(name);
-		params = new TreeMap<>();
+		params = new LinkedHashMap<>();
 	}
 	
 	public void addParam(AnnotationParameterModel parameter) {

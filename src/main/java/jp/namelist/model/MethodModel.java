@@ -1,7 +1,7 @@
 package jp.namelist.model;
 
+import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.TreeSet;
 
 public class MethodModel extends AbstractModifiableModel {
 
@@ -12,9 +12,9 @@ public class MethodModel extends AbstractModifiableModel {
 
 	public MethodModel(String name) {
 		super(name);
-		params = new TreeSet<>();
-		methodInvocations = new TreeSet<>();
-		methodReturns = new TreeSet<>();
+		params = new LinkedHashSet<>();
+		methodInvocations = new LinkedHashSet<>();
+		methodReturns = new LinkedHashSet<>();
 	}
 	
 	public void addParam(MethodParameterModel param) {

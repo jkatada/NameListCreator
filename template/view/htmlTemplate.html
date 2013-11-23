@@ -25,12 +25,14 @@ th {
 	<th>[型] @RequestMapping.value</th>
 	<th>[型] @RequestMapping.value以外</th>
 	<th>[型] その他のアノテーション</th>
+	<th>[型] 修飾子</th>
 	<th>[型] 名前</th>
 	<th>[メソッド] @RequestMapping.value</th>
 	<th>[メソッド] @RequestMapping.params</th>
 	<th>[メソッド] @RequestMapping.method</th>
 	<th>[メソッド] @RequestMapping.value, params, method以外</th>
 	<th>[メソッド] その他のアノテーション</th>
+	<th>[メソッド] 修飾子</th>
 	<th>[メソッド] 戻り値の型</th>
 	<th>[メソッド] 名前</th>
 	<th>[メソッド] 引数 </th>
@@ -61,6 +63,12 @@ th {
     	$!otherAnnotation.text <br>
     #end
     </td>
+    <!-- [型] 修飾子 -->
+    <td>
+    #foreach( $modifier in $type.modifiers )
+        $!modifier <br>
+    #end
+    </td>
     <!-- [型] 名前 -->
     <td>$!type.name</td>
     <!-- [メソッド] @RequestMapping.value -->
@@ -72,13 +80,19 @@ th {
     <!-- [メソッド] @RequestMapping.value, params, method以外 -->
     <td>
     #foreach( $otherParam in $method.getAnnotation("RequestMapping").getOtherParam("value", "params", "method"))
-        $!otherParam.text
+        $!otherParam.text <br>
     #end
     </td>
     <!-- [メソッド] @RequestMapping以外のアノテーション -->
     <td>
     #foreach( $otherAnnotation in $method.getOtherAnnotations("RequestMapping") )
     	$!otherAnnotation.text <br>
+    #end
+    </td>
+    <!-- [メソッド] 修飾子 -->
+    <td>
+    #foreach( $modifier in $method.modifiers )
+        $!modifier <br>
     #end
     </td>
     <!-- [メソッド] 戻り値の型 -->

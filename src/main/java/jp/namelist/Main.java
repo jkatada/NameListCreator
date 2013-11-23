@@ -15,6 +15,7 @@ import java.util.Map;
 import javax.xml.transform.TransformerFactoryConfigurationError;
 
 import jp.namelist.analyzer.ModelBuilder;
+import jp.namelist.view.VelocityViewExporter;
 
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
@@ -47,17 +48,7 @@ public class Main {
 			e.printStackTrace();
 		}
 		
-		StringWriter output = new StringWriter();
-		//new HTMLViewExporter(output).export(builder.getProject());
-		//System.out.println(output.toString());
-
-		Velocity.init();
-		VelocityContext context = new VelocityContext();
-		context.put("project", builder.getProject());
-		Template template = Velocity.getTemplate("template/view/htmlTemplate.html", "UTF-8");
-		template.merge(context, output);
-		System.out.println(output.toString());
-
+		new VelocityViewExporter().export(builder.getProject());
 	}
 
 	private class JavaFileVisitor extends SimpleFileVisitor<Path> {
