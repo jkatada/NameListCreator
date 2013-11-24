@@ -12,6 +12,8 @@ import jp.namelist.model.MethodParameterModel;
 import jp.namelist.model.PackageModel;
 import jp.namelist.model.ProjectModel;
 import jp.namelist.model.TypeModel;
+import jp.namelist.modelbuilder.filters.BuildModelFilter;
+import jp.namelist.modelbuilder.filters.DefaultBuildModelFilter;
 
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.Annotation;
@@ -31,7 +33,7 @@ import org.eclipse.jdt.core.dom.TypeDeclaration;
 
 class BuildModelVisitor extends ASTVisitor {
 
-	private AnalyzeFilter filter = new AnalyzeFilter();
+	private BuildModelFilter filter;
 
 	private ProjectModel currentProject;
 	private PackageModel currentPackage;
@@ -39,7 +41,12 @@ class BuildModelVisitor extends ASTVisitor {
 	private Stack<MethodModel> currentMethod = new Stack<>();
 
 	public BuildModelVisitor(String projectName) {
+		this(projectName, new DefaultBuildModelFilter());
+	}
+
+	public BuildModelVisitor(String projectName, BuildModelFilter filter) {
 		currentProject = new ProjectModel(projectName);
+		this.filter = filter;
 	}
 
 	@Override

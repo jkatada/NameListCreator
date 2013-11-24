@@ -20,9 +20,15 @@ public class VelocityViewExporter {
 
 	public void export(ProjectModel project, String outputFilePath)
 			throws IOException {
+		export(project, outputFilePath, HTML_TEMPLATE, HTML_TEMPLATE_CHARSET);
+	}
+
+	public void export(ProjectModel project, String outputFilePath,
+			String templatePath, String templateCharset) throws IOException {
 		Writer writer = Files.newBufferedWriter(FileSystems.getDefault()
-				.getPath(outputFilePath), Charset.forName(DEFAULT_OUTPUT_CHARSET));
-		export(project, writer, HTML_TEMPLATE, HTML_TEMPLATE_CHARSET);
+				.getPath(outputFilePath), Charset
+				.forName(DEFAULT_OUTPUT_CHARSET));
+		export(project, writer, templatePath, templateCharset);
 	}
 
 	public void export(ProjectModel project, Writer writer) throws IOException {
@@ -37,7 +43,7 @@ public class VelocityViewExporter {
 		context.put("project", project);
 		Template template = Velocity.getTemplate(templatePath, templateCharset);
 		template.merge(context, writer);
-		
+
 		writer.flush();
 
 	}

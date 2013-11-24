@@ -54,4 +54,12 @@ public abstract class AbstractModifiableModel extends AbstractModel {
 		return CollectionUtil.mapToList(annotations, excludeAnnotationNames);
 	}
 	
+	public boolean hasAnnotation(String annotationName) {
+		return annotations.containsKey(annotationName);
+	}
+	
+	public boolean hasModifier(String modifier) {
+		return modifiers.contains(modifier);
+	}
+	
 }

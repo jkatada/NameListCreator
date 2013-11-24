@@ -14,6 +14,8 @@ import java.util.Map;
 import javax.xml.transform.TransformerFactoryConfigurationError;
 
 import jp.namelist.model.ProjectModel;
+import jp.namelist.modelbuilder.filters.BuildModelFilter;
+import jp.namelist.modelbuilder.filters.DefaultBuildModelFilter;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.JavaCore;
@@ -24,8 +26,13 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 public class ModelBuilder {
 
 	public ProjectModel build(String projectName, Path sourceDir) throws IOException {
+		return build(projectName, sourceDir, new DefaultBuildModelFilter());
+	}
 
-		BuildModelVisitor builder = new BuildModelVisitor(projectName);
+	public ProjectModel build(String projectName, Path sourceDir,
+			BuildModelFilter filter) throws IOException {
+
+		BuildModelVisitor builder = new BuildModelVisitor(projectName, filter);
 		Files.walkFileTree(sourceDir, new JavaFileVisitor(builder));
 		
 		return builder.getProject();

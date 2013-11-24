@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<style>
+* {
+	font-size: 12px;
+}
+table {
+    border-top:1px solid #663300;
+    border-left:1px solid #663300;
+    border-collapse:collapse;
+    border-spacing:0;
+    background-color:#ffffff;
+    empty-cells:show;
+}
+th{
+    border-right:1px solid #663300;
+    border-bottom:1px solid #663300;
+    color:#330000;
+    background-color:#E0FFFF;
+    background-position:left top;
+    padding:0.3em 1em;
+    text-align:center;
+}
+td{
+    border-right:1px solid #663300;
+    border-bottom:1px solid #663300;
+    padding:0.3em 1em;
+}
+</style>
+
+</head>
+
+<body>
+
+
+<table class="display" id="nameTable" width="100%">
+<thead>
+<!-- simple header -->
+<!-- 
+<tr>
+	<th>プロジェクト</th>
+	<th>パッケージ</th>
+	<th>[型] @RequestMapping.value</th>
+	<th>[型] @RequestMapping.value以外</th>
+	<th>[型] その他のアノテーション</th>
+	<th>[型] 修飾子</th>
+	<th>[型] 名前</th>
+	<th>[メソッド] @RequestMapping.value</th>
+	<th>[メソッド] @RequestMapping.params</th>
+	<th>[メソッド] @RequestMapping.method</th>
+	<th>[メソッド] @RequestMapping.value, params, method以外</th>
+	<th>[メソッド] その他のアノテーション</th>
+	<th>[メソッド] 修飾子</th>
+	<th>[メソッド] 戻り値の型</th>
+	<th>[メソッド] 名前</th>
+	<th>[メソッド] 引数 </th>
+	<th>[メソッド] メソッド呼び出し</th>
+    <th>[メソッド] 戻り値</th>
+</tr>
+-->
+
+<!-- multi row header -->
+<tr>
+	<th rowspan="3">プロジェクト</th>
+	<th rowspan="3">パッケージ</th>
+	<th colspan="4">型</th>
+	<th colspan="9">メソッド</th>
+</tr>
+<tr>
+	<th colspan="2">@RequestMapping</th>
+	<th rowspan="2">その他のアノテーション</th>
+	<th rowspan="2">名前</th>
+	<th colspan="4">@RequestMapping</th>
+	<th rowspan="2">その他のアノテーション</th>
+	<th rowspan="2">名前</th>
+	<th rowspan="2">引数 </th>
+	<th rowspan="2">メソッド呼び出し</th>
+    <th rowspan="2">戻り値</th>
+</tr>
+<tr>
+	<th>value</th>
+	<th>value以外</th>
+	<th>value</th>
+	<th>params</th>
+	<th>method</th>
+	<th>その他のパラメータ</th>
+</tr>
+
+</thead>
+<tbody>
+#foreach( $package in $project.packages )
+  #foreach( $type in $package.types )
+    #foreach( $method in $type.methods )
+    
+    ## @RequestMappingを持つメソッドのみ出力
+    #if ($method.hasAnnotation("RequestMapping"))
+    
+<tr>
+    <!-- プロジェクト名 -->
+    <td>$!project.name</td>
+    <!-- パッケージ名 -->
+    <td>$!package.name</td>
+    <!-- [型] @RequestMapping.value -->
+    <td>$!type.getAnnotation("RequestMapping").getParam("value").value</td>
+    <!-- [型] @RequestMapping.value以外 -->
+    <td>
+    #foreach( $otherParam in $type.getAnnotation("RequestMapping").getOtherParam("value") )
+    	$!otherParam.text <br>
+    #end
+    </td>
+    <!-- [型] @RequestMapping以外のアノテーション -->
+    <td>
+    #foreach( $otherAnnotation in $type.getOtherAnnotations("RequestMapping") )
+    	$!otherAnnotation.text <br>
+    #end
+    </td>
+    <!-- [型] 名前 -->
+    <td>$!type.name</td>
+    <!-- [メソッド] @RequestMapping.value -->
+    <td>$!method.getAnnotation("RequestMapping").getParam("value").value</td>
+    <!-- [メソッド] @RequestMapping.params -->
+    <td>$!method.getAnnotation("RequestMapping").getParam("params").value</td>
+    <!-- [メソッド] @RequestMapping.method -->
+    <td>$!method.getAnnotation("RequestMapping").getParam("method").value</td>
+    <!-- [メソッド] @RequestMapping.value, params, method以外 -->
+    <td>
+    #foreach( $otherParam in $method.getAnnotation("RequestMapping").getOtherParam("value", "params", "method"))
+        $!otherParam.text <br>
+    #end
+    </td>
+    <!-- [メソッド] @RequestMapping以外のアノテーション -->
+    <td>
+    #foreach( $otherAnnotation in $method.getOtherAnnotations("RequestMapping") )
+    	$!otherAnnotation.text <br>
+    #end
+    </td>
+    <!-- [メソッド] 名前 -->
+    <td>$!method.name</td>
+    <!-- [メソッド] 引数 -->
+    <td>
+    #foreach( $param in $method.params )
+        $!param.text <br>
+    #end
+    </td>
+    <!-- [メソッド] メソッド呼び出し -->
+    <td>
+    #foreach( $invocation in $method.methodInvocations )
+        $!invocation <br>
+    #end
+    </td>
+    <!-- [メソッド] 戻り値 -->
+    <td>
+    #foreach( $return in $method.methodReturns )
+        $!return <br>
+    #end
+    </td>
+    
+</tr>
+    #end
+	#end
+  #end
+#end
+</tbody>
+</table>
+
+</body>
+
+</html>
