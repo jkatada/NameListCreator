@@ -3,13 +3,25 @@ package jp.namelist.model;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import javax.xml.bind.annotation.XmlElement;
+
 public class MethodModel extends AbstractModifiableModel {
 
 	private String returnType;
+	@XmlElement
 	private Set<MethodParameterModel> params;
+	@XmlElement
 	private Set<String> methodInvocations;
+	@XmlElement
 	private Set<String> methodReturns;
-
+	
+	/**
+	 *  for JAXB unmarshal
+	 */
+	public MethodModel() {
+		this("");
+	}
+	
 	public MethodModel(String name) {
 		super(name);
 		params = new LinkedHashSet<>();

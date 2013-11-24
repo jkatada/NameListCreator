@@ -4,12 +4,23 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.xml.bind.annotation.XmlElement;
+
 import jp.namelist.common.CollectionUtil;
 
 public class AnnotationModel extends AbstractModel {
 	
+	@XmlElement
 	private Map<String, AnnotationParameterModel> params;
+	
 	private String text;
+	
+	/**
+	 *  for JAXB unmarshal
+	 */
+	public AnnotationModel() {
+		this("");
+	}
 	
 	public AnnotationModel(String name) {
 		super(name);

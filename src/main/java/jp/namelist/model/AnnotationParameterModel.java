@@ -5,6 +5,13 @@ public class AnnotationParameterModel extends AbstractModel {
 
 	private String value;
 	
+	/**
+	 *  for JAXB unmarshal
+	 */
+	public AnnotationParameterModel() {
+		this("");
+	}
+	
 	public AnnotationParameterModel(String name) {
 		super(name);
 	}

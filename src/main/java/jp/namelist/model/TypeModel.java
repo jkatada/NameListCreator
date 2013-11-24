@@ -3,12 +3,22 @@ package jp.namelist.model;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import javax.xml.bind.annotation.XmlElement;
+
 public class TypeModel extends AbstractModifiableModel {
 
+	@XmlElement
 	private Set<MethodModel> methods;
 
 	// TODO フィールド
 	// TODO enum
+	
+	/**
+	 *  for JAXB unmarshal
+	 */
+	public TypeModel() {
+		this("");
+	}
 	
 	public TypeModel(String name) {
 		super(name);

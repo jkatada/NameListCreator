@@ -1,4 +1,4 @@
-package jp.namelist.analyzer;
+package jp.namelist.modelbuilder;
 
 import java.util.List;
 import java.util.Map;
@@ -29,7 +29,7 @@ import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 import org.eclipse.jdt.core.dom.Type;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 
-public class ModelBuilder extends ASTVisitor {
+class BuildModelVisitor extends ASTVisitor {
 
 	private AnalyzeFilter filter = new AnalyzeFilter();
 
@@ -38,7 +38,7 @@ public class ModelBuilder extends ASTVisitor {
 	private Stack<TypeModel> currentType = new Stack<>();
 	private Stack<MethodModel> currentMethod = new Stack<>();
 
-	public ModelBuilder(String projectName) {
+	public BuildModelVisitor(String projectName) {
 		currentProject = new ProjectModel(projectName);
 	}
 

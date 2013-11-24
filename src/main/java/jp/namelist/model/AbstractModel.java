@@ -11,6 +11,10 @@ public abstract class AbstractModel implements Comparable<AbstractModel> {
 		this.name = name;
 	}
 	
+	public void setName(String name) {
+		this.name = name;
+	}
+	
 	public String getName() {
 		return name;
 	}

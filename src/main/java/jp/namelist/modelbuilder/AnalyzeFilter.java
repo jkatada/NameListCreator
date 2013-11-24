@@ -1,8 +1,8 @@
-package jp.namelist.analyzer;
+package jp.namelist.modelbuilder;
 
 import org.eclipse.jdt.core.dom.MethodInvocation;
 
-public class AnalyzeFilter {
+class AnalyzeFilter {
 
 	public boolean isTarget(MethodInvocation node) {
 		// model.addAttributeの呼び出しを絞込

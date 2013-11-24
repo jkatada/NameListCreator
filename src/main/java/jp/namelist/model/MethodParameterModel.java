@@ -7,6 +7,13 @@ public class MethodParameterModel extends AbstractModifiableModel {
 	
 	private String text;
 	
+	/**
+	 *  for JAXB unmarshal
+	 */
+	public MethodParameterModel() {
+		this("");
+	}
+	
 	public MethodParameterModel(String name) {
 		super(name);
 	}

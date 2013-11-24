@@ -6,11 +6,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.xml.bind.annotation.XmlElement;
+
 import jp.namelist.common.CollectionUtil;
 
 public abstract class AbstractModifiableModel extends AbstractModel {
 
+	@XmlElement
 	private Map<String, AnnotationModel> annotations;
+
+	@XmlElement
 	private Set<String> modifiers;
 	
 	public AbstractModifiableModel(String name) {
