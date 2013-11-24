@@ -32,6 +32,7 @@
 			<artifactId>velocity</artifactId>
 			<version>1.7</version>
 		</dependency>
+		<!-- eclipse plugin -->
 		<dependency>
 			<groupId>org.eclipse.core</groupId>
 			<artifactId>jobs</artifactId>
