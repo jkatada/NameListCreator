@@ -4,24 +4,44 @@
 <head>
 <style>
 * {
-  font-size: 12px;
+	font-size: 12px;
 }
-table, th, td {
-  border-width: 1px; 
-  border-style: solid;
+table {
+    border-top:1px solid #663300;
+    border-left:1px solid #663300;
+    border-collapse:collapse;
+    border-spacing:0;
+    background-color:#ffffff;
+    empty-cells:show;
 }
-th {
-  background-color: lightcyan;
+th{
+    border-right:1px solid #663300;
+    border-bottom:1px solid #663300;
+    color:#330000;
+    background-color:#E0FFFF;
+    background-position:left top;
+    padding:0.3em 1em;
+    text-align:center;
+}
+td{
+    border-right:1px solid #663300;
+    border-bottom:1px solid #663300;
+    padding:0.3em 1em;
 }
 </style>
+
 </head>
 
 <body>
 
-<table>
+
+<table class="display" id="nameTable" width="100%">
+<thead>
+<!-- simple header -->
+<!-- 
 <tr>
-	<th>プロジェクト名</th>
-	<th>パッケージ名</th>
+	<th>プロジェクト</th>
+	<th>パッケージ</th>
 	<th>[型] @RequestMapping.value</th>
 	<th>[型] @RequestMapping.value以外</th>
 	<th>[型] その他のアノテーション</th>
@@ -38,9 +58,41 @@ th {
 	<th>[メソッド] 引数 </th>
 	<th>[メソッド] メソッド呼び出し</th>
     <th>[メソッド] 戻り値</th>
-	
+</tr>
+-->
+
+<!-- multi row header -->
+<tr>
+	<th rowspan="3">プロジェクト</th>
+	<th rowspan="3">パッケージ</th>
+	<th colspan="5">型</th>
+	<th colspan="11">メソッド</th>
+</tr>
+<tr>
+	<th colspan="2">@RequestMapping</th>
+	<th rowspan="2">その他のアノテーション</th>
+	<th rowspan="2">修飾子</th>
+	<th rowspan="2">名前</th>
+	<th colspan="4">@RequestMapping</th>
+	<th rowspan="2">その他のアノテーション</th>
+	<th rowspan="2">修飾子</th>
+	<th rowspan="2">戻り値の型</th>
+	<th rowspan="2">名前</th>
+	<th rowspan="2">引数 </th>
+	<th rowspan="2">メソッド呼び出し</th>
+    <th rowspan="2">戻り値</th>
+</tr>
+<tr>
+	<th>value</th>
+	<th>value以外</th>
+	<th>value</th>
+	<th>params</th>
+	<th>method</th>
+	<th>その他のパラメータ</th>
 </tr>
 
+</thead>
+<tbody>
 #foreach( $package in $project.packages )
   #foreach( $type in $package.types )
     #foreach( $method in $type.methods )
@@ -122,7 +174,7 @@ th {
 	#end
   #end
 #end
-
+</tbody>
 </table>
 
 </body>

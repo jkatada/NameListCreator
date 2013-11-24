@@ -14,7 +14,6 @@ import java.util.Map;
 import javax.xml.transform.TransformerFactoryConfigurationError;
 
 import jp.namelist.model.ProjectModel;
-import jp.namelist.view.VelocityViewExporter;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.JavaCore;

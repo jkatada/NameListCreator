@@ -5,20 +5,31 @@ import java.io.PrintWriter;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 
-import org.apache.commons.lang3.StringUtils;
-
 import jp.namelist.model.ProjectModel;
 import jp.namelist.modelbuilder.ModelBuilder;
+import jp.namelist.modelbuilder.XMLModelExporter;
 import jp.namelist.view.VelocityViewExporter;
+
+import org.apache.commons.lang3.StringUtils;
 
 public class Main {
 
 	public static void main(String[] args) {
 		
-		String projectName = "";
-		String sourceDir = "../test.springmvc/src/main/java"; 
+		if (args.length <= 1) {
+			System.out.println("usage: jp.namelist.Main projectname sourceDir [output]");
+		}
+		
+		String projectName = args[0];
+		String sourceDir = args[1];
 		String htmlOutput = "";
-		// String htmlOutput = "z:/output.html";
+		if (args.length >= 3) {
+		    htmlOutput = args[2];
+		}
+		
+		System.out.println(projectName);
+		System.out.println(sourceDir);
+		System.out.println(htmlOutput);
 		
 		Path sourceDirPath = FileSystems.getDefault().getPath(sourceDir);
 		ModelBuilder builder = new ModelBuilder();
@@ -34,12 +45,11 @@ public class Main {
 			
 			// System.out.println(builder.getProject());
 
-			// new XMLModelExporter().exportModel(builder.getProject(), new
-			// PrintWriter(System.out));
+			new XMLModelExporter().exportModel(model, new
+			 PrintWriter(System.out));
 
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new IllegalStateException(e);
 		}
 
 	}

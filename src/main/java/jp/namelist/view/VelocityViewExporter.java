@@ -25,18 +25,20 @@ public class VelocityViewExporter {
 		export(project, writer, HTML_TEMPLATE, HTML_TEMPLATE_CHARSET);
 	}
 
-	public void export(ProjectModel project, Writer writer) {
+	public void export(ProjectModel project, Writer writer) throws IOException {
 		export(project, writer, HTML_TEMPLATE, HTML_TEMPLATE_CHARSET);
 	}
 
 	public void export(ProjectModel project, Writer writer,
-			String templatePath, String templateCharset) {
+			String templatePath, String templateCharset) throws IOException {
 
 		Velocity.init();
 		VelocityContext context = new VelocityContext();
 		context.put("project", project);
 		Template template = Velocity.getTemplate(templatePath, templateCharset);
 		template.merge(context, writer);
+		
+		writer.flush();
 
 	}
 
