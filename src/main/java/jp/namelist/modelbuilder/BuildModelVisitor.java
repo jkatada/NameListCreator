@@ -2,6 +2,7 @@ package jp.namelist.modelbuilder;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Stack;
 
 import jp.namelist.model.AbstractModifiableModel;
@@ -123,7 +124,7 @@ class BuildModelVisitor extends ASTVisitor {
 
 		// 戻り値の型の情報を取得
 		Type returnType = node.getReturnType2();
-		methodModel.setReturnType(returnType.toString());
+		methodModel.setReturnType(Objects.toString(returnType, ""));
 
 		// 引数の情報を取得
 		@SuppressWarnings("unchecked")
@@ -154,7 +155,7 @@ class BuildModelVisitor extends ASTVisitor {
 
 	@Override
 	public boolean visit(ReturnStatement node) {
-		currentMethod.peek().addMethodReturn(node.getExpression().toString());
+		currentMethod.peek().addMethodReturn(Objects.toString(node.getExpression(), ""));
 		return super.visit(node);
 	}
 
