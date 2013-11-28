@@ -86,8 +86,7 @@ td{
 #foreach( $package in $project.packages )
   #foreach( $type in $package.types )
   
-    ## @Repositoryを持つ型のみ出力
-    #if ($type.hasAnnotation("Repository"))
+    #if ($type.hasAnnotation("Repository") || $type.isMatchName(".*Repository"))
   
     #foreach( $method in $type.methods )
 <tr>

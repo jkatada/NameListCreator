@@ -13,7 +13,7 @@ public abstract class AbstractModel implements Comparable<AbstractModel> {
 		this.name = name;
 	}
 	
-	public boolean matchName(String pattern) {
+	public boolean isMatchName(String pattern) {
 		return Pattern.matches(pattern, name);
 	}
 	
