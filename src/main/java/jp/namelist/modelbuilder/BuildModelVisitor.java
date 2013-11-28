@@ -58,6 +58,7 @@ class BuildModelVisitor extends ASTVisitor {
 			currentPackage = packages.get(packageName);
 		} else {
 			PackageModel newPackageModel = new PackageModel(packageName);
+			newPackageModel.setJavaDoc(Objects.toString(node.getJavadoc(), ""));
 			currentProject.addPackage(newPackageModel);
 			currentPackage = newPackageModel;
 		}
@@ -85,6 +86,7 @@ class BuildModelVisitor extends ASTVisitor {
 	@Override
 	public boolean visit(TypeDeclaration node) {
 		TypeModel typeModel = new TypeModel(node.getName().getIdentifier());
+		typeModel.setJavaDoc(Objects.toString(node.getJavadoc(), ""));
 		analyzeModifier(node.modifiers(), typeModel);
 
 		currentPackage.addType(typeModel);
@@ -102,6 +104,7 @@ class BuildModelVisitor extends ASTVisitor {
 	@Override
 	public boolean visit(EnumDeclaration node) {
 		TypeModel typeModel = new TypeModel(node.getName().getIdentifier());
+		typeModel.setJavaDoc(Objects.toString(node.getJavadoc(), ""));
 		analyzeModifier(node.modifiers(), typeModel);
 
 		currentPackage.addType(typeModel);
@@ -120,6 +123,7 @@ class BuildModelVisitor extends ASTVisitor {
 	public boolean visit(MethodDeclaration node) {
 		MethodModel methodModel = new MethodModel(node.getName()
 				.getFullyQualifiedName());
+		methodModel.setJavaDoc(Objects.toString(node.getJavadoc(), ""));
 		analyzeModifier(node.modifiers(), methodModel);
 
 		// 戻り値の型の情報を取得

@@ -5,8 +5,10 @@ import java.util.Set;
 
 import javax.xml.bind.annotation.XmlElement;
 
-public class PackageModel extends AbstractModel {
+public class PackageModel extends AbstractModel implements Documentable {
 
+	private String javaDoc;
+	
 	@XmlElement
 	private Set<TypeModel> types;
 	
@@ -28,6 +30,16 @@ public class PackageModel extends AbstractModel {
 
 	public void addType(TypeModel typeModel) {
 		types.add(typeModel);
+	}
+
+	@Override
+	public void setJavaDoc(String javaDoc) {
+		this.javaDoc = javaDoc;
+	}
+
+	@Override
+	public String getJavaDoc() {
+		return javaDoc;
 	}
 	
 }

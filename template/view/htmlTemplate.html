@@ -66,13 +66,14 @@ td{
 	<th rowspan="3">プロジェクト</th>
 	<th rowspan="3">パッケージ</th>
 	<th colspan="5">型</th>
-	<th colspan="11">メソッド</th>
+	<th colspan="12">メソッド</th>
 </tr>
 <tr>
 	<th colspan="2">@RequestMapping</th>
 	<th rowspan="2">その他のアノテーション</th>
 	<th rowspan="2">修飾子</th>
 	<th rowspan="2">名前</th>
+	<th rowspan="2">JavaDoc</th>
 	<th colspan="4">@RequestMapping</th>
 	<th rowspan="2">その他のアノテーション</th>
 	<th rowspan="2">修飾子</th>
@@ -123,6 +124,8 @@ td{
     </td>
     <!-- [型] 名前 -->
     <td>$!type.name</td>
+    <!-- [メソッド] JavaDoc -->
+    <td><pre>$!method.javaDoc</pre></td>
     <!-- [メソッド] @RequestMapping.value -->
     <td>$!method.getAnnotation("RequestMapping").getParam("value").value</td>
     <!-- [メソッド] @RequestMapping.params -->

@@ -5,9 +5,10 @@ import java.util.Set;
 
 import javax.xml.bind.annotation.XmlElement;
 
-public class MethodModel extends AbstractModifiableModel {
+public class MethodModel extends AbstractModifiableModel implements Documentable {
 
 	private String returnType;
+	private String javaDoc;
 	@XmlElement
 	private Set<MethodParameterModel> params;
 	@XmlElement
@@ -59,6 +60,16 @@ public class MethodModel extends AbstractModifiableModel {
 
 	public Set<String> getMethodReturns() {
 		return methodReturns;
+	}
+
+	@Override
+	public void setJavaDoc(String javaDoc) {
+		this.javaDoc = javaDoc;
+	}
+
+	@Override
+	public String getJavaDoc() {
+		return javaDoc;
 	}
 
 }

@@ -66,13 +66,14 @@ td{
 	<th rowspan="3">プロジェクト</th>
 	<th rowspan="3">パッケージ</th>
 	<th colspan="4">型</th>
-	<th colspan="6">メソッド</th>
+	<th colspan="7">メソッド</th>
 </tr>
 <tr>
 	<th rowspan="2">@Transactional</th>
 	<th rowspan="2">その他のアノテーション</th>
 	<th rowspan="2">修飾子</th>
 	<th rowspan="2">名前</th>
+	<th rowspan="2">JavaDoc</th>
 	<th rowspan="2">@Trasactional</th>
 	<th rowspan="2">その他のアノテーション</th>
 	<th rowspan="2">修飾子</th>
@@ -117,6 +118,8 @@ td{
     </td>
     <!-- [型] 名前 -->
     <td>$!type.name</td>
+    <!-- [メソッド] JavaDoc -->
+    <td><pre>$!method.javaDoc</pre></td>
     <!-- [メソッド] @Transactional -->
     <td>
     #foreach( $otherParam in $method.getAnnotation("Transactional").getOtherParam(""))
